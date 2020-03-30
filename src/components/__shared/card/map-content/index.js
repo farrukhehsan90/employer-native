@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import placeholderImage from "../../../../../assets/placholder-image.png";
-import Map from "../../map/Map";
+import Map from "../../map";
 
 // Sub Component for Employee Card
 const MapContent = ({ styles, item }) => {

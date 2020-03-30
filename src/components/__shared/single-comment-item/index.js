@@ -21,13 +21,13 @@ const SingleCommentItem = ({ item }) => {
 
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("Detail", {
-          item: {
-            ...item,
-            date
-          }
-        })
+      onPress={() =>{}
+        // navigation.navigate("Detail", {
+        //   item: {
+        //     ...item,
+        //     date
+        //   }
+        // })
       }
     >
       <View style={styles.container}>

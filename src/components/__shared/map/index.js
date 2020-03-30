@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import placeholderImage from "../../../../assets/placholder-image.png";
 
 // Custom Map component
@@ -10,14 +10,28 @@ const Map = ({ coordinates, style, onRegionChange }) => {
   return (
     <View style={styles.container}>
       <MapView
+      provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
+          latitude: 25.197525,
+          longitude: 55.274288
+          // latitudeDelta: 0.0922,
+          // longitudeDelta: 0.0421
         }}
-      />
+      
+        zoomControlEnabled
+        zoomEnabled
+        zoomTapEnabled
+        loadingEnabled
+        // minZoomLevel={4}
+      >
+        <Marker
+          coordinate={{
+            latitude: 25.197525,
+            longitude: 55.274288
+          }}
+        />
+      </MapView>
     </View>
   );
 };
@@ -31,7 +45,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5
   },
   image: { width: 75, height: 75, borderRadius: 150 },
-  map: { width: '100%', height: '100%'}
+  map: { width: "100%", height: "100%" }
 });
 
 export default Map;
