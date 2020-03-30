@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "the Employer",
+    "slug": "the-employer",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
+    "platforms": ["ios", "android", "web"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "com.employersinc.theemployer",
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCOYyv6l0Q8t97zKvPmES7DlD2zVU1DsDY"
+        }
+      }
+    },
+    "ios": {
+      "config": {
+        "googleMapsApiKey": "AIzaSyCOYyv6l0Q8t97zKvPmES7DlD2zVU1DsDY"
+      },
+      "bundleIdentifier": "com.employersinc.theemployer",
+      "supportsTablet": true,
+      "buildNumber": "1.0.0"
+    }
+  }
+}
