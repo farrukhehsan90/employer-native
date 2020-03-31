@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Provider } from "react-redux";
-import { store} from "./src/redux/store/store";
+import { store, persistor } from "./src/redux/store/store";
 import Constants from "expo-constants";
 import Navigator from "./Navigator";
 import { PersistGate } from "redux-persist/integration/react";
@@ -12,10 +12,10 @@ export default function App() {
   }, []);
 
   return (
-    // <PersistGate persistor={persistor}>
-    <Provider store={store}>
-      <Navigator />
-    </Provider>
-    // </PersistGate>
+    <PersistGate persistor={persistor}>
+      <Provider store={store}>
+        <Navigator />
+      </Provider>
+    </PersistGate>
   );
 }
