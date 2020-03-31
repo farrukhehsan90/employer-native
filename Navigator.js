@@ -5,6 +5,7 @@ import EmployeeList from "./src/components/employee-list";
 import EmployeeDetail from "./src/components/employee-detail";
 import Login from "./src/components/login";
 import Auth from "./src/components/auth";
+import AddEmployee from "./src/components/add-employee";
 
 const Stack = createStackNavigator(); // Stack based Navigator
 
@@ -25,9 +26,20 @@ const Navigator = () => {
         />
 
         <Stack.Screen
-          options={{ headerTitle: "Your Employees", headerTitleAlign: "center" }}
+          options={{
+            headerTitle: "Your Employees",
+            headerTitleAlign: "center"
+          }}
           name="Employees"
           component={EmployeeList}
+        />
+        <Stack.Screen
+          options={{
+            headerTitle: "Add an Employee",
+            headerTitleAlign: "center"
+          }}
+          name="AddEmployee"
+          component={AddEmployee}
         />
         <Stack.Screen
           options={({ route }) => ({

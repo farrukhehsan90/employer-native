@@ -3,14 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 
 // Button Component
-const Button = ({ onPress, style }) => {
+const Button = ({ onPress, style,title }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.container, style]}>
         <Text
           style={[styles.text, style && style.color && { color: style.color }]}
         >
-          Log In
+          {title}
         </Text>
       </View>
     </TouchableOpacity>

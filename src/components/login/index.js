@@ -54,7 +54,7 @@ const Login = ({ navigation }) => {
       payload: {}
     });
 
-    // Login 
+  // Login
   const onLogin = () => {
     let errors = {};
 
@@ -181,7 +181,10 @@ const Login = ({ navigation }) => {
                   </Text>
                 </Text>
               </TouchableOpacity>
-              <Button onPress={onLogin} />
+              <Button
+                title={isSignUp ? "Sign Up" : "Log in"}
+                onPress={onLogin}
+              />
             </Animated.View>
           )}
         </View>

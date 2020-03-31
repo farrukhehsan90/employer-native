@@ -12,12 +12,11 @@ import Avatar from "../avatar/Avatar";
 import moment from "moment";
 
 // Reusable List Item for Employees
-const SingleListItem = ({ item }) => {
-  const firstWord = item.title.substr(0, 1).toUpperCase();
-  const restOfTitle = item.title.substring(1);
-
+const SingleListItem = ({ item, index }) => {
+  const firstWord = item.name.substr(0, 1).toUpperCase();
+  const restOfTitle = item.name.substring(1);
+  const id = index + 1;
   const date = moment(new Date()).format("DD-MMM-YYYY");
-
   const comments = Math.round(Math.random() * 10);
 
   const navigation = useNavigation();
@@ -28,7 +27,8 @@ const SingleListItem = ({ item }) => {
         navigation.navigate("Detail", {
           item: {
             ...item,
-            date
+            date,
+            id
           }
         })
       }
@@ -41,11 +41,11 @@ const SingleListItem = ({ item }) => {
             <Text
               style={styles.nameText}
               numberOfLines={1}
-            >{`Employee #${item.id}`}</Text>
+            >{`Employee #${id}`}</Text>
             <Text numberOfLines={1}>{`${firstWord}${restOfTitle}`}</Text>
             <View style={styles.subTextContainer}>
               <View style={styles.subText}>
-                <Text>{`Rank #${item.id}`}</Text>
+                <Text>{`Rank #${id}`}</Text>
               </View>
               <View style={styles.subText}>
                 <Text>{`${Math.round(Math.random() * 100)} points`}</Text>

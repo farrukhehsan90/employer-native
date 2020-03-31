@@ -1,8 +1,19 @@
 import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
-import { View, Text, Image, ActivityIndicator, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ActivityIndicator,
+  StyleSheet,
+  Platform,
+  Dimensions
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import placeholderImage from "../../../assets/placholder-image.png";
-import { getEmployee } from "../../redux/actions/employeeActions";
+import {
+  getEmployee,
+  deleteEmployee
+} from "../../redux/actions/employeeActions";
 import Avatar from "../__shared/avatar/Avatar";
 import {
   ScrollView,
@@ -19,6 +30,7 @@ import Content from "../__shared/card/content";
 import CommentBox from "../__shared/card/comment-box";
 import Stats from "../__shared/card/stats";
 import MapContent from "../__shared/card/map-content";
+import Button from "../__shared/button";
 
 const EmployeeDetail = ({ navigation, route }) => {
   const { item } = route.params;
@@ -32,8 +44,8 @@ const EmployeeDetail = ({ navigation, route }) => {
   //Get Fresh Employee Details whenever a new employee is clicked in the list
   useEffect(() => {
     const { id } = item;
-    getEmployee(id)(dispatch);
-  }, [item.id]);
+    // getEmployee(id)(dispatch);
+  }, []);
 
   //For Setting React Navigation Options
   useLayoutEffect(() => {
@@ -46,13 +58,7 @@ const EmployeeDetail = ({ navigation, route }) => {
             )
           }
         >
-          <View
-            style={{
-              paddingHorizontal: 8,
-              flexDirection: "row",
-              alignItems: "center"
-            }}
-          >
+          <View style={styles.backArrowContainer}>
             {showComments ? (
               <Fragment>
                 <Ionicons
@@ -74,6 +80,22 @@ const EmployeeDetail = ({ navigation, route }) => {
             )}
           </View>
         </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => deleteEmployee(item, navigation)(dispatch)}
+        >
+          <View style={{ paddingHorizontal: 10 }}>
+            <Ionicons
+              name={Platform.select({
+                android: "ios-trash",
+                ios: "md-trash"
+              })}
+              size={30}
+              style={{ color: "red" }}
+            />
+          </View>
+        </TouchableOpacity>
       )
     });
   });
@@ -88,6 +110,11 @@ const EmployeeDetail = ({ navigation, route }) => {
             <FlatList
               initialNumToRender={5}
               windowSize={2}
+              ListEmptyComponent={() => (
+                <View style={styles.emptyComponentContainer}>
+                  <Text style={{ opacity: 0.5 }}>No comments yet!</Text>
+                </View>
+              )}
               maxToRenderPerBatch={5}
               keyExtractor={item => item.id.toString()}
               data={comments}
@@ -177,7 +204,18 @@ const styles = StyleSheet.create({
     color: "#000",
     opacity: 0.6
   },
-  likeStat: { paddingHorizontal: 5, color: "#000", opacity: 0.6 }
+  likeStat: { paddingHorizontal: 5, color: "#000", opacity: 0.6 },
+  backArrowContainer: {
+    paddingHorizontal: 8,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  emptyComponentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: Dimensions.get("window").height / 3
+  }
 });
 
 export default EmployeeDetail;

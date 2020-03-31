@@ -4,26 +4,29 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import placeholderImage from "../../../../assets/placholder-image.png";
 
 // Custom Map component
-const Map = ({ coordinates, style, onRegionChange }) => {
-  //   const { latitude, longitude } = coordinates;
+const Map = ({ style, onRegionChange, item }) => {
+  const { latitude, longitude } = item.location;
 
   return (
     <View style={styles.container}>
       <MapView
-      provider={PROVIDER_GOOGLE}
+        provider={PROVIDER_GOOGLE}
         style={styles.map}
-        initialRegion={{
-          latitude: 25.197525,
-          longitude: 55.274288
-          // latitudeDelta: 0.0922,
-          // longitudeDelta: 0.0421
-        }}
-      
+        initialRegion={
+          Object.keys(item.location).length <= 0
+            ? {
+                latitude: 25.197525,
+                longitude: 55.274288
+              }
+            : {
+                latitude,
+                longitude
+              }
+        }
         zoomControlEnabled
         zoomEnabled
         zoomTapEnabled
         loadingEnabled
-        // minZoomLevel={4}
       >
         <Marker
           coordinate={{

@@ -5,7 +5,8 @@ import {
   View,
   ActivityIndicator,
   Platform,
-  StyleSheet
+  StyleSheet,
+  Text
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getEmployees } from "../../redux/actions/employeeActions";
@@ -29,22 +30,38 @@ const EmployeeList = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => {},
-      headerTitle: `Your Employees, ${username}!`,
+      headerTitle: () => (
+        <Text style={{ fontWeight: "700" }}>Your Employees, {username}!</Text>
+      ),
       headerRight: () => (
-        <TouchableOpacity onPress={() => logout(navigation)(dispatch)}>
-          <View style={{ paddingHorizontal: 15 }}>
-            <Ionicons
-              name={Platform.select({
-                ios: "ios-log-out",
-                android: "md-log-out"
-              })}
-              size={30}
-            />
-          </View>
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
+            <View style={{ paddingHorizontal: 7 }}>
+              <Ionicons
+                name={Platform.select({
+                  ios: "ios-add-circle",
+                  android: "md-add-circle"
+                })}
+                style={{ color: "#F27A5F" }}
+                size={30}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => logout(navigation)(dispatch)}>
+            <View style={{ paddingHorizontal: 7 }}>
+              <Ionicons
+                name={Platform.select({
+                  ios: "ios-log-out",
+                  android: "md-log-out"
+                })}
+                size={30}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
       )
     });
-  });
+  }, []);
 
   //Get All Employees
   useEffect(() => {
@@ -64,10 +81,19 @@ const EmployeeList = ({ navigation }) => {
         maxToRenderPerBatch={limit}
         showsVerticalScrollIndicator={false}
         data={employees}
-        keyExtractor={item => item.id.toString()}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyComponentContainer}>
+            <Text style={styles.emptyComponentContainerText}>
+              No Employees yet!
+            </Text>
+          </View>
+        )}
+        keyExtractor={item => item.phone.toString()}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.35}
-        renderItem={({ item }) => <SingleListItem item={item} />}
+        renderItem={({ item, index }) => (
+          <SingleListItem index={index} item={item} />
+        )}
         ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
       />
       {loading && <ActivityIndicator size="small" />}
@@ -84,6 +110,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#d3d3d3",
     height: 2,
     alignSelf: "center",
+    opacity: 0.5
+  },
+  emptyComponentContainer: {
+    flex: 1,
+    height: Dimensions.get("window").height / 3,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  emptyComponentContainerText: {
     opacity: 0.5
   }
 });

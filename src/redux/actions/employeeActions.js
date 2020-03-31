@@ -1,6 +1,12 @@
-import { GET_EMPLOYEE, GET_EMPLOYEES, LOADING } from "./types";
-import { API_URL } from "../../config/API";
-import store from "../store/store";
+import {
+  GET_EMPLOYEES,
+  LOADING,
+  ADD_EMPLOYEE,
+  ERROR
+} from "./types";
+
+import { store } from "../store/store";
+import { AsyncStorage } from "react-native";
 
 // get all employees
 export const getEmployees = (count, limit, setCount) => dispatch => {
@@ -8,12 +14,10 @@ export const getEmployees = (count, limit, setCount) => dispatch => {
 
   dispatch(setLoading(true));
 
-  fetch(`${API_URL}/posts`, {
-    method: "GET"
-  })
-    .then(res => res.json())
-    .then(res => {
+  AsyncStorage.getItem("employees")
+    .then(employeesRes => {
       dispatch(setLoading(false));
+      const res = res !== null ? JSON.parse(employeesRes) : [];
 
       const newEmployees = [...res].slice(count, count + limit);
 
@@ -31,38 +35,80 @@ export const getEmployees = (count, limit, setCount) => dispatch => {
     });
 };
 
-// get single employee along with comments for it
-export const getEmployee = empId => dispatch => {
-  dispatch(setLoading(true));
-  Promise.all([
-    fetch(`${API_URL}/posts/${empId}`, {
-      method: "GET"
-    }),
-    fetch(`${API_URL}/posts/${empId}/comments`, {
-      method: "GET"
-    })
-  ])
-    .then(response => response.map(res => res.json()))
-    .then(mixedRes => {
-      Promise.all(mixedRes).then(([employee, comments]) => {
-        dispatch(setLoading(false));
+// TODO: Could have comments loaded for a single user with regards to his resume or work by others employees/recruiters.
 
-        return dispatch({
-          type: GET_EMPLOYEE,
-          payload: {
-            comments,
-            employee
-          }
-        });
-      });
-    })
-    .catch(err => {
+// get single employees' comments
+// export const getEmployee = empId => dispatch => {
+//   dispatch(setLoading(true));
+
+//     fetch(`${API_URL}/posts/${empId}/comments`, {
+//       method: "GET"
+//     })
+//     .then(res =>res.json()))
+//     .then(mixedRes => {
+
+//         dispatch(setLoading(false));
+
+//         return dispatch({
+//           type: GET_EMPLOYEE,
+//           payload: {
+//             comments,
+//             employee
+//           }
+
+//       });
+//     })
+//     .catch(err => {
+//       dispatch({
+//         type: ERROR,
+//         payload: err
+//       });
+//       dispatch(setLoading(false));
+//     });
+// };
+
+// add employees
+export const addEmployees = (employee, navigation) => dispatch => {
+  let employees = [];
+
+  AsyncStorage.getItem("employees").then(res => {
+    if (!res) {
+      employees.push(employee);
+    } else {
+      employees = [...JSON.parse(res)];
+
+      employees.push(employee);
+    }
+
+    AsyncStorage.setItem("employees", JSON.stringify(employees)).then(() => {
       dispatch({
-        type: ERROR,
-        payload: err
+        type: ADD_EMPLOYEE,
+        payload: employees
       });
-      dispatch(setLoading(false));
+
+      navigation.navigate("Employees");
+      return;
     });
+  });
+};
+
+export const deleteEmployee = (employee, navigation) => dispatch => {
+  const { employees } = store.getState().employees;
+
+  const updatedEmployees = employees.filter(
+    singleEmployee => singleEmployee.phone !== employee.phone
+  );
+
+  AsyncStorage.setItem("employees", JSON.stringify(updatedEmployees)).then(
+    () => {
+      dispatch({
+        type: GET_EMPLOYEES,
+        payload: updatedEmployees
+      });
+
+      navigation.navigate("Employees");
+    }
+  );
 };
 
 // set / unset loading for employees reducer

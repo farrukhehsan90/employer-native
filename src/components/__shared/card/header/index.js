@@ -10,9 +10,9 @@ const Header = ({styles,item}) => {
       <Avatar source={item.avatar} isAvatar />
 
       <View style={styles.headerDescription}>
-        <Text>{item.title}</Text>
+        <Text>{item.name}</Text>
         <Text style={styles.subHeaderAuthor}>
-          by <Text style={styles.subHeaderDate}>{`#${item.userId}`}</Text> on{" "}
+          by <Text style={styles.subHeaderDate}>{`#${item.id}`}</Text> on{" "}
           <Text style={styles.subHeaderDate}>{`${item.date}`}</Text>
         </Text>
       </View>
